@@ -2,10 +2,10 @@
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin Upload Karya</title>
 <link rel="stylesheet" href="css/base.css">
-<style>.box{max-width:480px;margin:120px auto;padding:30px}select,input,button{width:100%;margin-top:14px}</style></head>
+<style>.box{max-width:480px;margin:100px auto;padding:30px}select,input,button{width:100%;margin-top:14px}.box:hover{transform:none}</style></head>
 <body>
-<div class="box neon-box">
-  <h2 class="neon-text">Upload Karya</h2>
+<div class="box card">
+  <h2 style="color:var(--biru)">Upload Karya</h2>
   <select id="blok">
     <option value="1">Blok 1 - Polimedia Mengabdi</option>
     <option value="2">Blok 2 - Sekolah Ormawa</option>
@@ -13,30 +13,47 @@
     <option value="4">Blok 4 - Rakerwil Wilayah 4</option>
     <option value="5">Sertifikat</option>
   </select>
-  <input id="judul" placeholder="Judul karya">
+  <input id="judul" placeholder="Judul karya (opsional)">
   <input id="file" type="file" accept="image/*" multiple>
-  <button class="btn neon-btn" id="upload">Upload</button>
-  <p id="info" style="margin-top:14px"></p>
+  <button class="btn primary" id="upload">Upload</button>
+  <p id="info" style="margin-top:14px;font-size:.9rem"></p>
 </div>
 <script type="module">
-import { db, storage } from "./js/firebase-config.js";
-import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { db } from "./js/firebase-config.js";
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Kecilkan foto (maks 1200px, JPEG) supaya muat di Firestore
+function kecilkan(file) {
+  return new Promise((ok, gagal) => {
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, 1200 / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = img.width * k; c.height = img.height * k;
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      let q = .8, data = c.toDataURL("image/jpeg", q);
+      while (data.length > 900000 && q > .3) data = c.toDataURL("image/jpeg", q -= .1);
+      data.length > 900000 ? gagal(new Error("Foto terlalu besar")) : ok(data);
+    };
+    img.onerror = () => gagal(new Error("Gagal membaca " + file.name));
+    img.src = URL.createObjectURL(file);
+  });
+}
+const batas = (p) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error("Waktu habis. Pastikan Firestore Database sudah dibuat dan Rules sudah di-Publish.")), 20000))]);
 
 document.getElementById("upload").onclick = async () => {
   const info = document.getElementById("info");
   const files = document.getElementById("file").files;
   const blok = Number(document.getElementById("blok").value);
   if (!files.length) { info.textContent = "Pilih gambar dulu."; return; }
+  let n = 0;
   try {
     for (const f of files) {
-      info.textContent = "Mengunggah " + f.name + "...";
-      const r = ref(storage, `karya/blok${blok}/${Date.now()}_${f.name}`);
-      await uploadBytes(r, f);
-      const url = await getDownloadURL(r);
-      await addDoc(collection(db, "karya"), { blok, url, judul: document.getElementById("judul").value, waktu: serverTimestamp() });
+      info.textContent = `Mengunggah ${f.name} (${++n}/${files.length})...`;
+      const url = await kecilkan(f);
+      await batas(addDoc(collection(db, "karya"), { blok, url, judul: document.getElementById("judul").value, waktu: serverTimestamp() }));
     }
-    info.textContent = "Selesai. Gambar sudah masuk ke blok " + blok + ".";
-  } catch (e) { info.textContent = "Gagal: " + e.message; }
+    info.textContent = "Selesai. " + files.length + " gambar masuk ke blok " + blok + ".";
+  } catch (e) { info.textContent = "Gagal: " + e.message; console.error(e); }
 };
 </script></body></html>
