@@ -2,10 +2,12 @@
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin Upload Karya</title>
 <link rel="stylesheet" href="css/base.css">
-<style>.box{max-width:480px;margin:100px auto;padding:30px}select,input,button{width:100%;margin-top:14px}.box:hover{transform:none}</style></head>
+<style>.box{max-width:480px;margin:40px auto;padding:30px}select,input,button{width:100%;margin-top:14px}.box:hover{transform:none}
+select,input{padding:13px;border-radius:12px;border:1.5px solid var(--biru-muda);font-family:inherit;background:#fff}
+h2{color:var(--biru)}small{display:block;margin-top:8px;color:#5a6f95}</style></head>
 <body>
 <div class="box card">
-  <h2 style="color:var(--biru)">Upload Karya</h2>
+  <h2>Pilih Blok</h2>
   <select id="blok">
     <option value="1">Blok 1 - Polimedia Mengabdi</option>
     <option value="2">Blok 2 - Sekolah Ormawa</option>
@@ -13,16 +15,30 @@
     <option value="4">Blok 4 - Rakerwil Wilayah 4</option>
     <option value="5">Sertifikat</option>
   </select>
+</div>
+
+<div class="box card">
+  <h2>Upload Foto</h2>
   <input id="judul" placeholder="Judul karya (opsional)">
   <input id="file" type="file" accept="image/*" multiple>
-  <button class="btn primary" id="upload">Upload</button>
-  <p id="info" style="margin-top:14px;font-size:.9rem"></p>
+  <button class="btn primary" id="upload">Upload Foto</button>
 </div>
+
+<div class="box card">
+  <h2>Tambah Video</h2>
+  <input id="linkVideo" placeholder="Tempel link video di sini">
+  <small>Bisa link YouTube (youtube.com/watch?v=..., youtu.be/..., atau shorts) atau link langsung file .mp4</small>
+  <button class="btn primary" id="tambahVideo">Tambah Video</button>
+</div>
+
+<p id="info" style="max-width:480px;margin:0 auto 40px;padding:0 10px;font-size:.9rem"></p>
+
 <script type="module">
 import { db } from "./js/firebase-config.js";
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const info = document.getElementById("info");
+const blokNow = () => Number(document.getElementById("blok").value);
 
-// Kecilkan foto (maks 1200px, JPEG) supaya muat di Firestore
 function kecilkan(file) {
   return new Promise((ok, gagal) => {
     const img = new Image();
@@ -39,21 +55,39 @@ function kecilkan(file) {
     img.src = URL.createObjectURL(file);
   });
 }
-const batas = (p) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error("Waktu habis. Pastikan Firestore Database sudah dibuat dan Rules sudah di-Publish.")), 20000))]);
+const batas = (p) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error("Waktu habis. Pastikan Firestore sudah dibuat dan Rules sudah di-Publish.")), 20000))]);
 
 document.getElementById("upload").onclick = async () => {
-  const info = document.getElementById("info");
   const files = document.getElementById("file").files;
-  const blok = Number(document.getElementById("blok").value);
   if (!files.length) { info.textContent = "Pilih gambar dulu."; return; }
   let n = 0;
   try {
     for (const f of files) {
       info.textContent = `Mengunggah ${f.name} (${++n}/${files.length})...`;
       const url = await kecilkan(f);
-      await batas(addDoc(collection(db, "karya"), { blok, url, judul: document.getElementById("judul").value, waktu: serverTimestamp() }));
+      await batas(addDoc(collection(db, "karya"), { blok: blokNow(), tipe: "gambar", url, judul: document.getElementById("judul").value, waktu: serverTimestamp() }));
     }
-    info.textContent = "Selesai. " + files.length + " gambar masuk ke blok " + blok + ".";
+    info.textContent = "Selesai. " + files.length + " gambar masuk ke blok " + blokNow() + ".";
+  } catch (e) { info.textContent = "Gagal: " + e.message; console.error(e); }
+};
+
+function idYoutube(link) {
+  const m = link.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+document.getElementById("tambahVideo").onclick = async () => {
+  const link = document.getElementById("linkVideo").value.trim();
+  if (!link) { info.textContent = "Tempel link video dulu."; return; }
+  const yt = idYoutube(link);
+  let data;
+  if (yt) data = { tipe: "youtube", url: yt };
+  else if (/\.mp4(\?.*)?$/i.test(link)) data = { tipe: "mp4", url: link };
+  else { info.textContent = "Link tidak dikenali. Pakai link YouTube atau link langsung .mp4."; return; }
+  try {
+    info.textContent = "Menyimpan video...";
+    await batas(addDoc(collection(db, "karya"), { blok: blokNow(), ...data, judul: "", waktu: serverTimestamp() }));
+    info.textContent = "Selesai. Video masuk ke blok " + blokNow() + ".";
+    document.getElementById("linkVideo").value = "";
   } catch (e) { info.textContent = "Gagal: " + e.message; console.error(e); }
 };
 </script></body></html>
