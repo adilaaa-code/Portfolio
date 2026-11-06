@@ -1,0 +1,24 @@
+/* ===== PORTFOLIO: tab, 4 blok karya, galeri ===== */
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px;margin-bottom:28px}
+.tabs:hover{transform:none}
+.tab{padding:13px;border:0;border-radius:12px;background:transparent;font-family:inherit;font-weight:600;color:var(--teks);cursor:pointer;transition:.3s}
+.tab:hover{background:var(--pucat)}
+.tab.on{background:linear-gradient(90deg,var(--biru),var(--biru-muda));color:#fff}
+.panel{display:none}.panel.on{display:block}
+
+.blok{padding:24px;margin-bottom:26px}
+.blok:hover{transform:none}
+.blok h3{margin-bottom:16px;padding-left:12px;border-left:4px solid var(--biru);color:var(--biru)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.gallery .item-img{aspect-ratio:4/3;border-radius:14px;overflow:hidden;border:1.5px solid var(--biru-muda);cursor:zoom-in;transition:.35s;background:var(--pucat)}
+.gallery .item-img:hover{box-shadow:var(--neon);transform:scale(1.03)}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block}
+.kosong{grid-column:1/-1;text-align:center;color:#6b84ad;padding:20px}
+
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
+.skills .card{padding:28px;text-align:center;font-weight:600}
+
+#lightbox{position:fixed;inset:0;background:rgba(10,30,70,.85);display:none;align-items:center;justify-content:center;z-index:100;cursor:zoom-out}
+#lightbox.show{display:flex}
+#lightbox img{max-width:90%;max-height:88%;border-radius:14px;box-shadow:var(--neon)}
+@media(max-width:600px){.tab{padding:11px 4px;font-size:.8rem}}

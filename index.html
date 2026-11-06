@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portofolio | Adila Ahmad Ramdani</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/karya.css">
+</head>
+<body>
+  <canvas id="stars"></canvas>
+
+  <!-- NAVBAR (pill melayang) -->
+  <nav class="pill">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="hero">
+      <div class="hero-text">
+        <h2 class="hi">Hi, I'm</h2>
+        <h1>Adila Ahmad Ramdani</h1>
+        <h3 id="typing"></h3>
+        <p>Saya membuat desain dan dokumentasi untuk kegiatan organisasi dan pengabdian masyarakat.</p>
+        <div class="btns">
+          <a href="#portfolio" class="btn primary">Lihat Karya</a>
+          <a href="#contact" class="btn ghost">Hubungi Saya</a>
+        </div>
+      </div>
+      <div class="photo card"><img src="https://placehold.co/420x420/e8f1ff/1e6bff?text=Foto+Kamu" alt="Foto profil"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2 class="title">About Me</h2>
+      <p class="lead">Tulis perkenalan singkatmu di sini: jurusan, kampus, dan hal yang kamu tekuni.</p>
+      <div class="two-col">
+        <div>
+          <h3 class="sub">Education</h3>
+          <div class="item card"><b>Politeknik Negeri Media Kreatif</b><span>Jurusan Kamu</span><small>2023 – Sekarang</small></div>
+          <div class="item card"><b>SMA / SMK Kamu</b><span>Jurusan Kamu</span><small>2020 – 2023</small></div>
+        </div>
+        <div>
+          <h3 class="sub">Experience</h3>
+          <div class="item card"><b>Polimedia Mengabdi</b><span>Anggota</span><small>2025</small></div>
+          <div class="item card"><b>Tim Sukses Kabinet Aksatama</b><span>Anggota</span><small>2025</small></div>
+          <div class="item card"><b>Rakerwil Wilayah 4</b><span>Panitia</span><small>2026</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="section">
+      <h2 class="title">Portofolio</h2>
+      <div class="tabs card">
+        <button class="tab on" data-tab="t-karya">Karya</button>
+        <button class="tab" data-tab="t-sertif">Sertifikat</button>
+        <button class="tab" data-tab="t-skill">Skills</button>
+      </div>
+
+      <div class="panel on" id="t-karya">
+        <div class="blok card"><h3>Polimedia Mengabdi</h3><div class="gallery" id="grid-1"></div></div>
+        <div class="blok card"><h3>Sekolah Ormawa</h3><div class="gallery" id="grid-2"></div></div>
+        <div class="blok card"><h3>Tim Sukses Kabinet Aksatama</h3><div class="gallery" id="grid-3"></div></div>
+        <div class="blok card"><h3>Rakerwil Wilayah 4</h3><div class="gallery" id="grid-4"></div></div>
+      </div>
+      <div class="panel" id="t-sertif"><div class="gallery" id="grid-5"></div></div>
+      <div class="panel" id="t-skill">
+        <div class="skills">
+          <div class="card">Photoshop</div><div class="card">Illustrator</div><div class="card">Figma</div>
+          <div class="card">Canva</div><div class="card">Premiere Pro</div><div class="card">CapCut</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <h2 class="title">Hubungi Saya</h2>
+      <div class="contact-grid">
+        <div class="card box">
+          <h3 class="blue">Hubungi</h3>
+          <p>Ada yang mau didiskusikan? Langsung kirim pesan aja ya!</p>
+          <form id="formKontak">
+            <input id="nama" placeholder="Nama Anda" required>
+            <input id="email" type="email" placeholder="Email Anda" required>
+            <textarea id="pesan" rows="4" placeholder="Pesan Anda" required></textarea>
+            <button class="btn primary" type="submit">Kirim Pesan</button>
+            <p id="status"></p>
+          </form>
+          <h4 class="find">FIND ME</h4>
+          <a class="social card" href="#">LinkedIn <small>Let's Connect</small></a>
+          <a class="social card" href="#">Instagram <small>@usernamekamu</small></a>
+          <a class="social card" href="#">Github <small>@usernamekamu</small></a>
+          <a class="social card" href="#">TikTok <small>@usernamekamu</small></a>
+        </div>
+
+        <div class="card box">
+          <h3>Komentar (<span id="jumlah">0</span>)</h3>
+          <form id="formKomentar">
+            <input id="kNama" placeholder="Masukkan nama kamu" required>
+            <textarea id="kIsi" rows="3" placeholder="Tulis komentar kamu di sini..." required></textarea>
+            <button class="btn primary" type="submit">Kirim Komentar</button>
+          </form>
+          <div id="daftarKomentar"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Adila Ahmad Ramdani. Semua hak dilindungi.</footer>
+  <div id="lightbox"><img alt=""></div>
+
+  <script src="js/stars.js"></script>
+  <script src="js/main.js"></script>
+  <script type="module" src="js/karya.js"></script>
+  <script type="module" src="js/kontak.js"></script>
+</body>
+</html>

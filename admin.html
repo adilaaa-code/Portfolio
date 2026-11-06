@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Upload Karya</title>
+<link rel="stylesheet" href="css/base.css">
+<style>.box{max-width:480px;margin:120px auto;padding:30px}select,input,button{width:100%;margin-top:14px}</style></head>
+<body>
+<div class="box neon-box">
+  <h2 class="neon-text">Upload Karya</h2>
+  <select id="blok">
+    <option value="1">Blok 1 - Polimedia Mengabdi</option>
+    <option value="2">Blok 2 - Sekolah Ormawa</option>
+    <option value="3">Blok 3 - Tim Sukses Kabinet Aksatama</option>
+    <option value="4">Blok 4 - Rakerwil Wilayah 4</option>
+    <option value="5">Sertifikat</option>
+  </select>
+  <input id="judul" placeholder="Judul karya">
+  <input id="file" type="file" accept="image/*" multiple>
+  <button class="btn neon-btn" id="upload">Upload</button>
+  <p id="info" style="margin-top:14px"></p>
+</div>
+<script type="module">
+import { db, storage } from "./js/firebase-config.js";
+import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+document.getElementById("upload").onclick = async () => {
+  const info = document.getElementById("info");
+  const files = document.getElementById("file").files;
+  const blok = Number(document.getElementById("blok").value);
+  if (!files.length) { info.textContent = "Pilih gambar dulu."; return; }
+  try {
+    for (const f of files) {
+      info.textContent = "Mengunggah " + f.name + "...";
+      const r = ref(storage, `karya/blok${blok}/${Date.now()}_${f.name}`);
+      await uploadBytes(r, f);
+      const url = await getDownloadURL(r);
+      await addDoc(collection(db, "karya"), { blok, url, judul: document.getElementById("judul").value, waktu: serverTimestamp() });
+    }
+    info.textContent = "Selesai. Gambar sudah masuk ke blok " + blok + ".";
+  } catch (e) { info.textContent = "Gagal: " + e.message; }
+};
+</script></body></html>
