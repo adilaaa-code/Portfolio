@@ -18,10 +18,17 @@ document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () 
 }));
 
 const links = document.querySelectorAll(".pill a");
-const io = new IntersectionObserver((es) => es.forEach((e) => {
-  if (e.isIntersecting) links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id));
-}), { threshold: .45 });
-document.querySelectorAll("main section").forEach((s) => io.observe(s));
+const secs = [...document.querySelectorAll("main section")];
+function menuAktif() {
+  const y = scrollY + innerHeight * 0.35;
+  let cur = secs[0].id;
+  secs.forEach((s) => { if (s.getBoundingClientRect().top + scrollY <= y) cur = s.id; });
+  if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) cur = secs[secs.length - 1].id;
+  links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + cur));
+}
+addEventListener("scroll", menuAktif, { passive: true });
+addEventListener("load", menuAktif);
+menuAktif();
 
 const lb = document.getElementById("lightbox");
 document.addEventListener("click", (e) => {

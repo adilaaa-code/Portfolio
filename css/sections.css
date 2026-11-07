@@ -20,7 +20,8 @@
 .item{padding:16px 20px;margin-bottom:14px;display:flex;flex-direction:column;gap:3px}
 .item span{font-size:.85rem}.item small{font-size:.78rem;color:var(--biru);font-weight:600}
 
-.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:24px}
+.contact-grid{display:flex;justify-content:center}
+.contact-grid .box{width:100%;max-width:560px}
 .box{padding:28px}
 .box:hover{transform:none}
 .blue{color:var(--biru)}
