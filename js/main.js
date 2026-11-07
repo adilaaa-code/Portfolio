@@ -37,13 +37,14 @@ document.addEventListener("click", (e) => {
   else if (lb.contains(e.target)) lb.classList.remove("show");
 });
 
-// Menu HP: buka/tutup
-const burger = document.querySelector(".burger"), pill = document.querySelector(".pill");
-burger.addEventListener("click", () => {
-  const buka = burger.classList.toggle("buka");
-  pill.classList.toggle("buka", buka);
-  burger.setAttribute("aria-expanded", buka);
+// Menu HP: garis di bawah -> ketuk untuk membuka, pilih menu -> kembali jadi garis
+const garis = document.querySelector(".garis"), pill = document.querySelector(".pill");
+function tutup() { pill.classList.remove("buka"); garis.classList.remove("buka"); garis.setAttribute("aria-expanded", "false"); }
+garis.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const buka = pill.classList.toggle("buka");
+  garis.classList.toggle("buka", buka);
+  garis.setAttribute("aria-expanded", buka);
 });
-pill.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
-  burger.classList.remove("buka"); pill.classList.remove("buka");
-}));
+pill.querySelectorAll("a").forEach((a) => a.addEventListener("click", tutup));
+document.addEventListener("click", (e) => { if (!pill.contains(e.target)) tutup(); });
