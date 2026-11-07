@@ -29,15 +29,8 @@ footer{text-align:center;padding:26px;margin-top:60px;color:#fff;font-size:.85re
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 /* ===== Navbar HP: garis di bawah, diketuk muncul menu ===== */
-.garis{display:none}
-@media(max-width:900px){
-  .garis{display:block;position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:60;width:96px;height:18px;border-radius:12px;cursor:pointer;
-    border:3px solid transparent;animation:putar 4s linear infinite;-webkit-tap-highlight-color:transparent;
-    background:linear-gradient(#f7faff,#f7faff) padding-box,conic-gradient(from var(--sudut),#1e6bff,#fff,#5ab0ff,#fff,#1e6bff) border-box}
-  .garis::after{content:"";position:absolute;inset:-14px -22px}
-  .pill{top:auto;bottom:52px;left:50%;width:min(92vw,360px);display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px;border-radius:24px;
-    transform:translate(-50%,20px) scale(.92);transform-origin:bottom center;opacity:0;visibility:hidden;transition:.28s}
-  .pill.buka{transform:translateX(-50%);opacity:1;visibility:visible}
-  .pill a{padding:13px 6px;text-align:center;font-size:.85rem}
-  footer{padding-bottom:56px}
-}
+  .garis{display:block;position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:999;
+    width:120px;height:20px;border-radius:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;border:3px solid transparent;
+    background:linear-gradient(90deg,#1e6bff,#5ab0ff) padding-box,conic-gradient(from var(--sudut),#fff,#1e6bff,#fff,#5ab0ff,#fff) border-box;
+    box-shadow:0 0 14px rgba(30,107,255,.6);animation:putar 4s linear infinite,denyut 2s ease-in-out infinite}
+    @keyframes denyut{50%{box-shadow:0 0 24px rgba(30,107,255,.95)}}
