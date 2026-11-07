@@ -36,3 +36,14 @@ document.addEventListener("click", (e) => {
   if (img) { lb.querySelector("img").src = img.src; lb.classList.add("show"); }
   else if (lb.contains(e.target)) lb.classList.remove("show");
 });
+
+// Menu HP: buka/tutup
+const burger = document.querySelector(".burger"), pill = document.querySelector(".pill");
+burger.addEventListener("click", () => {
+  const buka = burger.classList.toggle("buka");
+  pill.classList.toggle("buka", buka);
+  burger.setAttribute("aria-expanded", buka);
+});
+pill.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+  burger.classList.remove("buka"); pill.classList.remove("buka");
+}));
