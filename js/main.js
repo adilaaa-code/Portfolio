@@ -48,3 +48,20 @@ garis.addEventListener("click", (e) => {
 });
 pill.querySelectorAll("a").forEach((a) => a.addEventListener("click", tutup));
 document.addEventListener("click", (e) => { if (!pill.contains(e.target)) tutup(); });
+// Logo berjalan: gandakan set logo agar loop mulus di semua lebar layar
+function isiMarquee() {
+  document.querySelectorAll(".track").forEach((t) => {
+    const g = t.querySelector(".grup");
+    t.querySelectorAll(".klon").forEach((x) => x.remove());
+    let n = Math.ceil((innerWidth * 2) / g.offsetWidth);
+    n += n % 2;
+    for (let i = 1; i < n; i++) {
+      const c = g.cloneNode(true);
+      c.classList.add("klon"); c.setAttribute("aria-hidden", "true");
+      t.appendChild(c);
+    }
+    t.style.animationDuration = (g.offsetWidth * n) / 2 / 60 + "s";
+  });
+}
+isiMarquee();
+addEventListener("resize", isiMarquee);
