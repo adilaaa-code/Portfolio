@@ -1,3 +1,4 @@
+// ===== Ambil gambar & video dari Firestore. blok 1-4 = karya, 5 = sertifikat =====
 import { db } from "./firebase-config.js";
 import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -32,10 +33,12 @@ async function muatBlok(nomor) {
     const snap = await getDocs(query(collection(db, "karya"), where("blok", "==", nomor)));
     if (snap.empty) { grid.innerHTML = '<p class="kosong">Belum ada karya di sini.</p>'; return; }
     grid.innerHTML = "";
-    snap.forEach((doc) => {
-      const d = doc.data();
-      grid.appendChild(d.tipe === "youtube" || d.tipe === "mp4" ? buatVideo(d) : buatGambar(d));
-    });
+    const items = [];
+    snap.forEach((doc) => items.push(doc.data()));
+    const video = (d) => (d.tipe === "youtube" || d.tipe === "mp4" ? 1 : 0);
+    // Video selalu di paling atas, sisanya urut sesuai waktu upload
+    items.sort((a, b) => video(b) - video(a) || (a.waktu?.seconds || 0) - (b.waktu?.seconds || 0));
+    items.forEach((d) => grid.appendChild(video(d) ? buatVideo(d) : buatGambar(d)));
   } catch (err) {
     console.error(err);
     grid.innerHTML = '<p class="kosong">Gagal memuat. Cek konfigurasi Firebase.</p>';

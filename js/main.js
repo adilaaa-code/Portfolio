@@ -65,3 +65,23 @@ function isiMarquee() {
 }
 isiMarquee();
 addEventListener("resize", isiMarquee);
+// Logo membesar saat berada di tengah, lalu mengecil lagi
+function fokusTengah() {
+  const m = document.querySelector(".marquee");
+  if (m) {
+    const r = m.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight) {
+      const cx = r.left + r.width / 2;
+      const radius = Math.min(190, r.width * 0.42);
+      m.querySelectorAll(".logo-kotak").forEach((el) => {
+        const b = el.getBoundingClientRect();
+        const t = Math.max(0, 1 - Math.abs(b.left + b.width / 2 - cx) / radius);
+        const s = 1 + 0.5 * (t * t * (3 - 2 * t));
+        el.style.setProperty("--s", s.toFixed(3));
+        el.style.zIndex = Math.round(s * 10);
+      });
+    }
+  }
+  requestAnimationFrame(fokusTengah);
+}
+fokusTengah();
