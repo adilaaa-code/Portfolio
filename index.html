@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Portofolio | Adila Ahmad Ramdani</title>
@@ -8,8 +9,23 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/sections.css">
   <link rel="stylesheet" href="css/karya.css">
+  <link rel="stylesheet" href="css/intro.css">
 </head>
-<body>
+<body class="intro">
+
+  <!-- OPENING -->
+  <div id="intro" aria-hidden="true">
+    <div class="tirai atas"></div><div class="tirai bawah"></div>
+    <div class="orb o1"></div><div class="orb o2"></div>
+    <div class="isi">
+      <div class="cincin"><span>A</span></div>
+      <p class="sapa">Hi, welcome to</p>
+      <h1 class="judul"><span class="kata" data-t="Adila's"></span> <span class="kata" data-t="Portfolio"></span></h1>
+      <p class="tag">Where ideas turn into visuals.</p>
+      <div class="muat"><div class="bar"><i></i></div><b class="persen">0%</b></div>
+    </div>
+  </div>
+
   <canvas id="stars"></canvas>
 
   <!-- NAVBAR (pill melayang) -->
@@ -42,11 +58,11 @@
     <!-- ABOUT -->
     <section id="about" class="section">
       <h2 class="title">About Me</h2>
-      <p class="lead">I’m Adila Ahmad Ramdani, a Multimedia Engineering Technology student at Politeknik Negeri Media Kreatif (GPA 3.77/4.00), specializing in graphic design, motion graphics, and social media content. I work with Adobe Illustrator, After Effects, Figma, and Canva to create visuals ranging from campaign posters and Instagram feeds to event videotron bumpers. I have led creative and publication teams for campus and regional events, delivering assets on schedule while keeping branding consistent. I’m a collaborative team player eager to grow in the creative industry.</p>
+      <p class="lead">I’m Adila Ahmad Ramdani, a Multimedia Engineering Technology student at Politeknik Negeri Media Kreatif (GPA 3.77/4.00), specializing in graphic design, motion graphics, and social media content. I work with Adobe Illustrator, After Effects, Figma, and Canva to create visuals ranging from campaign posters and Instagram feeds to event videotron bumpers. I have led creative and publication teams for campus and regional events, delivering assets on schedule while keeping branding consistent. I’m a collaborative team player eager to grow in the creative industry.</p></section>
       <section id="education" class="section">
   <h2 class="title">Education</h2>
 <div class="item card ada-foto">
-  <b>Politeknik Negeri Media Kreatif</b><span>Jurusan Kamu</span><small>2024 – Sekarang</small>
+  <b>Politeknik Negeri Media Kreatif</b><span>Teknologi Rekayasa Multimedia</span><small>2024 – Sekarang</small>
   <img class="foto" src="pict/polmed.jpg" alt="Foto kampus">
 </div>
 <div class="item card ada-foto">
@@ -74,7 +90,6 @@
   </div>
 </div>
 </section>
-    </section>
 
     <!-- PORTFOLIO -->
     <section id="portfolio" class="section">
@@ -86,11 +101,11 @@
       </div>
 
       <div class="panel on" id="t-karya">
-        <div class="blok card"><h3>Divisi HPD Polimedia Mengabdi</h3><div class="gallery" id="grid-1"></div></div>
-        <div class="blok card"><h3>Divisi HPD Sekolah Ormawa</h3><div class="gallery" id="grid-2"></div></div>
-        <div class="blok card"><h3>Divisi Kreatif Tim Sukses Kabinet Aksatama</h3><div class="gallery" id="grid-3"></div></div>
+        <div class="blok card"><h3>Divisi HPD Polimedia Mengabdi</h3><div class="gallery" id="grid-1" data-mockup="pict/polimediamengabdi1,pict/polimediamengabdi2,pict/polimediamengabdi3,pict/polimediamengabdi4"></div></div>
+        <div class="blok card"><h3>Divisi HPD Sekolah Ormawa</h3><div class="gallery" id="grid-2" data-mockup="pict/sekolahormawa1,pict/sekolahormawa2,pict/sekolahormawa3"></div></div>
+        <div class="blok card"><h3>Divisi Kreatif Tim Sukses Kabinet Aksatama</h3><div class="gallery" id="grid-3" data-mockup="pict/kabinetaksatama1,pict/kabinetaksatama2"></div></div>
         <div class="blok card"><h3>Divisi HPD Rakerwil Wilayah 4</h3><div class="gallery" id="grid-4"></div></div>
-      </div>
+      </div>      
       <div class="panel" id="t-sertif"><div class="gallery" id="grid-5"></div></div>
       <div class="panel" id="t-skill">
         <div class="skills">
@@ -126,7 +141,9 @@
   <footer>© 2026 Adila Ahmad Ramdani. Semua hak dilindungi.</footer>
   <div id="lightbox"><img alt=""></div>
 
+  <script src="js/intro.js"></script>
   <script src="js/stars.js"></script>
+  <script src="js/animasi.js"></script>
   <script src="js/main.js"></script>
   <script type="module" src="js/karya.js"></script>
   <script type="module" src="js/kontak.js"></script>

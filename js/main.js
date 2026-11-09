@@ -32,7 +32,7 @@ menuAktif();
 
 const lb = document.getElementById("lightbox");
 document.addEventListener("click", (e) => {
-  const img = e.target.closest(".item-img img");
+  const img = e.target.closest(".item-img img, .item-mockup img");
   if (img) { lb.querySelector("img").src = img.src; lb.classList.add("show"); }
   else if (lb.contains(e.target)) lb.classList.remove("show");
 });
