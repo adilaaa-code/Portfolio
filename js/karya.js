@@ -56,11 +56,13 @@ function buatHP(feeds, akun) {
   let gagal = 0;
   feeds.forEach((f) => {
     const img = new Image();
-    img.alt = "Feed Instagram"; img.onload = ukur;
+    img.alt = "Feed Instagram"; img.decoding = "async"; img.onload = ukur;
     muatGambar(img, f, () => { img.remove(); if (++gagal === feeds.length) box.remove(); });
     feed.appendChild(img);
   });
   addEventListener("resize", ukur);
+  // berhenti menggulir saat HP tidak terlihat (hemat memori & baterai)
+  new IntersectionObserver((es) => es.forEach((e) => box.classList.toggle("jeda", !e.isIntersecting))).observe(box);
   return box;
 }
 

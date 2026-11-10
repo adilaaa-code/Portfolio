@@ -64,8 +64,8 @@ function isiMarquee() {
   });
 }
 isiMarquee();
-addEventListener("resize", isiMarquee);
-// Logo membesar saat berada di tengah, lalu mengecil lagi
+let lebarLayar = innerWidth;
+addEventListener("resize", () => { if (innerWidth !== lebarLayar) { lebarLayar = innerWidth; isiMarquee(); } });// Logo membesar saat berada di tengah, lalu mengecil lagi
 function fokusTengah() {
   const m = document.querySelector(".marquee");
   if (m) {

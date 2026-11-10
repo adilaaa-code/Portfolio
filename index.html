@@ -10,10 +10,14 @@
   <link rel="stylesheet" href="css/karya.css">
   <link rel="stylesheet" href="css/intro.css">
   <style>
-    /* Rapikan jarak Experience -> Portfolio (di sini supaya pasti terbaca paling akhir) */
+    /* jarak Experience -> Portfolio */
     #experience{padding-bottom:0}
     .marquee{margin-top:10px;padding:24px 0}
     #portfolio{padding-top:56px;scroll-margin-top:36px}
+    /* performa: logo & kartu tidak perlu outline berputar di HP, marquee berhenti saat tak terlihat */
+    .logo-kotak{will-change:auto}
+    .marquee.jeda .track{animation-play-state:paused}
+    @media(max-width:900px){.item,.tabs,.blok,.logo-kotak{animation:none!important}}
   </style>
 </head>
 <body class="intro">
