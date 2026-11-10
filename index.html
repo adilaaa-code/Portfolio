@@ -12,12 +12,12 @@
   <style>
     /* jarak Experience -> Portfolio */
     #experience{padding-bottom:0}
-    .marquee{margin-top:10px;padding:24px 0}
     #portfolio{padding-top:56px;scroll-margin-top:36px}
-    /* performa: logo & kartu tidak perlu outline berputar di HP, marquee berhenti saat tak terlihat */
-    .logo-kotak{will-change:auto}
-    .marquee.jeda .track{animation-play-state:paused}
-    @media(max-width:900px){.item,.tabs,.blok,.logo-kotak{animation:none!important}}
+    /* cegah halaman melebar ke samping di HP */
+    html,body{overflow-x:hidden}
+    main{overflow-x:clip}
+    /* di HP, outline kartu tidak berputar (lebih ringan) */
+    @media(max-width:900px){.item,.tabs,.blok{animation:none!important}}
   </style>
 </head>
 <body class="intro">
@@ -94,16 +94,6 @@
         <div class="item card"><b>Divisi HPD Polimedia Mengabdi</b><span>Ketua Divisi</span><small>2026</small></div>
         <div class="item card"><b>Divisi HPD Rakerwil Fornassosmas Wilayah 4</b><span>Anggota</span><small>2026</small></div>
         <div class="item card"><b>Divisi HPD Sekolah Ormawa</b><span>Anggota</span><small>2026</small></div>
-      </div>
-      <div class="marquee" aria-label="Logo organisasi">
-        <div class="track">
-          <div class="grup">
-            <div class="logo-kotak"><img src="pict/logo-aksatama.png" alt="Tim Sukses Kabinet Aksatama"></div>
-            <div class="logo-kotak"><img src="pict/logo-polimedia-mengabdi.png" alt="Polimedia Mengabdi"></div>
-            <div class="logo-kotak"><img src="pict/logo-rakerwil.png" alt="Rakerwil Fornassosmas Wilayah 4"></div>
-            <div class="logo-kotak"><img src="pict/logo-ormawa.png" alt="Sekolah Ormawa"></div>
-          </div>
-        </div>
       </div>
     </section>
 

@@ -1,4 +1,4 @@
-// ===== Mengetik, tab portfolio, menu aktif, lightbox =====
+// ===== Mengetik, tab portfolio, menu aktif, lightbox, menu HP =====
 const teks = ["Desainer Grafis", "Videografer", "Mahasiswa Polimedia"];
 let t = 0, c = 0, hapus = false;
 const el = document.getElementById("typing");
@@ -32,7 +32,7 @@ menuAktif();
 
 const lb = document.getElementById("lightbox");
 document.addEventListener("click", (e) => {
-  const img = e.target.closest(".item-img img, .item-mockup img");
+  const img = e.target.closest(".item-img img");
   if (img) { lb.querySelector("img").src = img.src; lb.classList.add("show"); }
   else if (lb.contains(e.target)) lb.classList.remove("show");
 });
@@ -48,40 +48,3 @@ garis.addEventListener("click", (e) => {
 });
 pill.querySelectorAll("a").forEach((a) => a.addEventListener("click", tutup));
 document.addEventListener("click", (e) => { if (!pill.contains(e.target)) tutup(); });
-// Logo berjalan: gandakan set logo agar loop mulus di semua lebar layar
-function isiMarquee() {
-  document.querySelectorAll(".track").forEach((t) => {
-    const g = t.querySelector(".grup");
-    t.querySelectorAll(".klon").forEach((x) => x.remove());
-    let n = Math.ceil((innerWidth * 2) / g.offsetWidth);
-    n += n % 2;
-    for (let i = 1; i < n; i++) {
-      const c = g.cloneNode(true);
-      c.classList.add("klon"); c.setAttribute("aria-hidden", "true");
-      t.appendChild(c);
-    }
-    t.style.animationDuration = (g.offsetWidth * n) / 2 / 60 + "s";
-  });
-}
-isiMarquee();
-let lebarLayar = innerWidth;
-addEventListener("resize", () => { if (innerWidth !== lebarLayar) { lebarLayar = innerWidth; isiMarquee(); } });// Logo membesar saat berada di tengah, lalu mengecil lagi
-function fokusTengah() {
-  const m = document.querySelector(".marquee");
-  if (m) {
-    const r = m.getBoundingClientRect();
-    if (r.bottom > 0 && r.top < innerHeight) {
-      const cx = r.left + r.width / 2;
-      const radius = Math.min(190, r.width * 0.42);
-      m.querySelectorAll(".logo-kotak").forEach((el) => {
-        const b = el.getBoundingClientRect();
-        const t = Math.max(0, 1 - Math.abs(b.left + b.width / 2 - cx) / radius);
-        const s = 1 + 0.5 * (t * t * (3 - 2 * t));
-        el.style.setProperty("--s", s.toFixed(3));
-        el.style.zIndex = Math.round(s * 10);
-      });
-    }
-  }
-  requestAnimationFrame(fokusTengah);
-}
-fokusTengah();
