@@ -1,14 +1,25 @@
-// ===== Opening: huruf muncul satu-satu, bar loading, lalu tirai terbuka =====
+// ===== Opening: huruf muncul satu-satu, partikel naik, bar loading, lalu lingkaran menutup =====
 (() => {
   const intro = document.getElementById("intro");
   if (!intro) return;
 
-  const SEKALI_PER_SESI = false; // ubah ke true kalau opening hanya mau tampil sekali per kunjungan
+  const SEKALI_PER_SESI = false; // true = opening hanya tampil sekali per kunjungan
   const lewati = matchMedia("(prefers-reduced-motion: reduce)").matches ||
     (SEKALI_PER_SESI && sessionStorage.getItem("introSudah"));
   if (lewati) { intro.remove(); document.body.classList.remove("intro"); return; }
 
-  // pecah kata menjadi huruf agar bisa dianimasikan satu per satu
+  // partikel kecil yang naik di latar
+  const wadah = intro.querySelector(".titik-wadah");
+  for (let i = 0; i < 22; i++) {
+    const t = document.createElement("span");
+    const u = 4 + Math.random() * 7;
+    t.className = "titik";
+    t.style.cssText = `left:${Math.random() * 100}%;width:${u}px;height:${u}px;` +
+      `animation-duration:${6 + Math.random() * 6}s;animation-delay:${-Math.random() * 10}s`;
+    wadah.appendChild(t);
+  }
+
+  // pecah kata menjadi huruf
   let n = 0;
   intro.querySelectorAll(".kata").forEach((k) => {
     [...k.dataset.t].forEach((ch) => {
@@ -19,7 +30,7 @@
   });
 
   const bar = intro.querySelector(".bar i"), persen = intro.querySelector(".persen");
-  const DURASI = 3200;
+  const DURASI = 3400;
   const mulai = performance.now();
   let siap = document.readyState === "complete", tutupSudah = false;
   addEventListener("load", () => (siap = true));
@@ -37,15 +48,15 @@
     if (tutupSudah) return;
     tutupSudah = true;
     bar.style.transform = "scaleX(1)"; persen.textContent = "100%";
-    setTimeout(() => intro.classList.add("selesai"), 350);           // isi memudar, tirai membuka
-    setTimeout(() => {                                                // website mulai beranimasi
+    setTimeout(() => intro.classList.add("selesai"), 400);
+    setTimeout(() => {
       document.body.classList.remove("intro");
       document.dispatchEvent(new Event("introSelesai"));
-    }, 900);
-    setTimeout(() => intro.remove(), 2200);
+    }, 1100);
+    setTimeout(() => intro.remove(), 2400);
     if (SEKALI_PER_SESI) sessionStorage.setItem("introSudah", "1");
   }
 
   requestAnimationFrame(langkah);
-  setTimeout(tutup, 8000); // pengaman
+  setTimeout(tutup, 8000);
 })();

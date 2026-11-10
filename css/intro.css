@@ -1,46 +1,60 @@
 /* ===== OPENING / INTRO ===== */
 body.intro{overflow:hidden}
 #intro{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;overflow:hidden;
-  background:linear-gradient(160deg,#fff 0%,#eaf3ff 45%,#bcd8ff 100%)}
-#intro .tirai{position:absolute;left:0;right:0;height:50%;z-index:1;
-  background:linear-gradient(160deg,#fff 0%,#eaf3ff 45%,#bcd8ff 100%);background-size:100% 200%;
-  transition:transform .9s cubic-bezier(.77,0,.18,1) .4s}
-#intro .atas{top:0;background-position:top;border-bottom:2px solid rgba(30,107,255,.45);box-shadow:0 6px 30px rgba(30,107,255,.3)}
-#intro .bawah{bottom:0;background-position:bottom;border-top:2px solid rgba(30,107,255,.45);box-shadow:0 -6px 30px rgba(30,107,255,.3)}
-#intro.selesai{background:none}
-#intro.selesai .atas{transform:translateY(-101%)}
-#intro.selesai .bawah{transform:translateY(101%)}
+  background:linear-gradient(160deg,#fff 0%,#eaf3ff 45%,#bcd8ff 100%);
+  clip-path:circle(150% at 50% 50%);transition:clip-path 1.1s cubic-bezier(.77,0,.18,1) .45s}
+#intro.selesai{clip-path:circle(0% at 50% 50%)}
 
-#intro .orb{position:absolute;z-index:2;border-radius:50%;filter:blur(70px);opacity:.55;animation:melayang 8s ease-in-out infinite;transition:opacity .5s}
+#intro .sinar{position:absolute;inset:-60%;opacity:.55;animation:muter 12s linear infinite;
+  background:conic-gradient(from 0deg,transparent 0 78%,rgba(255,255,255,.9) 88%,transparent 100%)}
+#intro .orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:melayang 8s ease-in-out infinite}
 #intro .o1{width:340px;height:340px;background:#5ab0ff;top:-60px;left:-60px}
 #intro .o2{width:300px;height:300px;background:#1e6bff;bottom:-70px;right:-50px;opacity:.35;animation-delay:-3s}
-#intro.selesai .orb{opacity:0}
+.titik{position:absolute;bottom:-20px;border-radius:50%;background:rgba(30,107,255,.45);animation:naikTitik linear infinite}
 
 #intro .isi{position:relative;z-index:3;text-align:center;padding:0 20px;transition:opacity .5s ease,transform .6s ease}
-#intro.selesai .isi{opacity:0;transform:scale(1.08) translateY(-12px)}
+#intro.selesai .isi{opacity:0;transform:scale(1.1) translateY(-12px)}
 
-.cincin{width:118px;height:118px;margin:0 auto 26px;border-radius:50%;display:grid;place-items:center;border:4px solid transparent;
+.cincin-wadah{position:relative;width:118px;height:118px;margin:0 auto 28px}
+.cincin-wadah::before,.cincin-wadah::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(30,107,255,.45);animation:riak 2.6s ease-out infinite}
+.cincin-wadah::after{animation-delay:1.3s}
+.orbit{position:absolute;inset:-20px;animation:muter 5s linear infinite}
+.orbit::before{content:"";position:absolute;top:0;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#5ab0ff;box-shadow:0 0 16px #1e6bff}
+.cincin{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;border:4px solid transparent;
   background:linear-gradient(#f7faff,#f7faff) padding-box,conic-gradient(from var(--sudut),#1e6bff,#fff,#5ab0ff,#fff,#1e6bff) border-box;
   animation:putar 3s linear infinite,munculCincin .9s cubic-bezier(.2,.9,.3,1.3) both,cahaya 2s ease-in-out .9s infinite}
 .cincin span{font-size:3rem;font-weight:800;color:#1e6bff}
 
-.sapa{font-size:clamp(.8rem,2.6vw,1rem);font-weight:600;letter-spacing:.38em;text-transform:uppercase;color:#5ab0ff;
-  opacity:0;animation:naik .8s ease .6s forwards}
-.judul{font-size:clamp(2.2rem,9.5vw,4.4rem);font-weight:800;line-height:1.15;margin:10px 0 14px;color:#14284b}
-.judul .kata{display:inline-block}
-.judul .kata+.kata{color:#1e6bff;margin-left:.25em}
-.huruf{display:inline-block;opacity:0;transform:translateY(46px) scale(.8);filter:blur(10px);
-  animation:masukHuruf .75s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(1s + var(--i) * 55ms)}
-.tag{font-size:clamp(.9rem,3vw,1.1rem);color:#3a5280;opacity:0;animation:naik .9s ease 2.3s forwards}
+.sapa{display:inline-flex;align-items:center;gap:10px;padding:10px 24px;border-radius:50px;font-weight:600;
+  font-size:clamp(.95rem,3.6vw,1.15rem);color:#14284b;border:2px solid transparent;opacity:0;
+  background:linear-gradient(#f7faff,#f7faff) padding-box,conic-gradient(from var(--sudut),#1e6bff,#fff,#5ab0ff,#fff,#1e6bff) border-box;
+  box-shadow:0 0 22px rgba(30,107,255,.25);animation:putar 4s linear infinite,naik .8s ease .5s forwards}
+.tangan{display:inline-block;transform-origin:70% 75%;animation:lambai 1.8s ease-in-out 1.2s infinite}
 
-.muat{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:34px;opacity:0;animation:naik .6s ease 1.2s forwards}
+.judul{font-size:clamp(2.2rem,9.5vw,4.4rem);font-weight:800;line-height:1.15;margin:16px 0 12px;color:#14284b}
+.judul .kata{display:inline-block}
+.judul .kata+.kata{margin-left:.25em}
+.huruf{display:inline-block;opacity:0;transform:translateY(46px) scale(.8);filter:blur(10px);
+  background:linear-gradient(90deg,#14284b,#1e6bff,#5ab0ff,#1e6bff,#14284b);background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:masukHuruf .75s cubic-bezier(.2,.8,.2,1) forwards,kilau 3s linear infinite;
+  animation-delay:calc(1s + var(--i) * 55ms),calc(var(--i) * -160ms)}
+.tag{font-size:clamp(.9rem,3vw,1.1rem);color:#3a5280;opacity:0;animation:tagMasuk 1.3s ease 2.2s forwards}
+
+.muat{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:32px;opacity:0;animation:naik .6s ease 1.2s forwards}
 .bar{width:min(240px,56vw);height:6px;border-radius:6px;background:rgba(30,107,255,.16);overflow:hidden}
 .bar i{display:block;height:100%;border-radius:6px;transform-origin:left;transform:scaleX(0);
   background:linear-gradient(90deg,#1e6bff,#5ab0ff);box-shadow:0 0 12px rgba(30,107,255,.7)}
 .persen{min-width:44px;text-align:left;font-size:.85rem;color:#1e6bff}
 
+@keyframes muter{to{transform:rotate(360deg)}}
+@keyframes riak{from{transform:scale(1);opacity:.8}to{transform:scale(2.1);opacity:0}}
 @keyframes munculCincin{from{opacity:0;transform:scale(.3) rotate(-90deg)}to{opacity:1;transform:none}}
-@keyframes cahaya{0%,100%{box-shadow:0 0 18px rgba(30,107,255,.35)}50%{box-shadow:0 0 38px rgba(30,107,255,.7)}}
+@keyframes cahaya{0%,100%{box-shadow:0 0 18px rgba(30,107,255,.35)}50%{box-shadow:0 0 40px rgba(30,107,255,.75)}}
+@keyframes lambai{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(18deg)}20%,40%{transform:rotate(-10deg)}}
 @keyframes masukHuruf{to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes kilau{to{background-position:300% 0}}
 @keyframes naik{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes tagMasuk{from{opacity:0;letter-spacing:.45em}to{opacity:1;letter-spacing:.04em}}
 @keyframes melayang{50%{transform:translate(40px,30px) scale(1.15)}}
+@keyframes naikTitik{0%{transform:translateY(0);opacity:0}10%{opacity:1}100%{transform:translateY(-110vh);opacity:0}}

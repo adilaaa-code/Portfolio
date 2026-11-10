@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin Upload Karya</title>
+<title>Admin Portofolio</title>
 <link rel="stylesheet" href="css/base.css">
 <style>.box{max-width:480px;margin:40px auto;padding:30px}select,input,button{width:100%;margin-top:14px}.box:hover{transform:none}
 select,input{padding:13px;border-radius:12px;border:1.5px solid var(--biru-muda);font-family:inherit;background:#fff}
-h2{color:var(--biru)}small{display:block;margin-top:8px;color:#5a6f95}</style></head>
+h2{color:var(--biru)}small{display:block;margin-top:8px;color:#5a6f95}
+.row{display:flex;align-items:center;gap:12px;margin-top:12px}
+.row img,.row .vid{width:90px;height:68px;object-fit:cover;border-radius:10px;border:1.5px solid var(--biru-muda)}
+.vid{display:flex;align-items:center;justify-content:center;background:#e8f1ff;font-weight:600;font-size:.8rem}
+.hapus{width:auto;margin:0 0 0 auto;padding:8px 16px;background:#fff;color:#d33;border-color:#d33}</style></head>
 <body>
+<div class="box card">
+  <h2>Login Admin</h2>
+  <div id="formLogin">
+    <input id="em" type="email" placeholder="Email admin">
+    <input id="pw" type="password" placeholder="Password">
+    <button class="btn primary" id="masuk">Masuk</button>
+  </div>
+  <button class="btn ghost" id="keluar" style="display:none">Keluar</button>
+  <small id="statusLogin">Belum masuk.</small>
+</div>
+
 <div class="box card">
   <h2>Pilih Blok</h2>
   <select id="blok">
@@ -27,17 +42,32 @@ h2{color:var(--biru)}small{display:block;margin-top:8px;color:#5a6f95}</style></
 <div class="box card">
   <h2>Tambah Video</h2>
   <input id="linkVideo" placeholder="Tempel link video di sini">
-  <small>Bisa link YouTube (youtube.com/watch?v=..., youtu.be/..., atau shorts) atau link langsung file .mp4</small>
+  <small>Link YouTube (watch?v=..., youtu.be/..., shorts) atau link langsung file .mp4</small>
   <button class="btn primary" id="tambahVideo">Tambah Video</button>
+</div>
+
+<div class="box card">
+  <h2>Kelola / Hapus Karya</h2>
+  <small>Menampilkan karya di blok yang dipilih di atas.</small>
+  <div id="daftar"></div>
+</div>
+
+<div class="box card">
+  <h2>Kelola Komentar</h2>
+  <small>Komentar dari pengunjung website. Klik Hapus untuk menghapus.</small>
+  <div id="daftarKom"></div>
 </div>
 
 <p id="info" style="max-width:480px;margin:0 auto 40px;padding:0 10px;font-size:.9rem"></p>
 
 <script type="module">
-import { db } from "./js/firebase-config.js";
-import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const info = document.getElementById("info");
-const blokNow = () => Number(document.getElementById("blok").value);
+import { app, db } from "./js/firebase-config.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, addDoc, getDocs, query, where, orderBy, limit, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const $ = (id) => document.getElementById(id);
+const info = $("info");
+const blokNow = () => Number($("blok").value);
+const batas = (p) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error("Waktu habis. Cek Firestore, Rules, dan login admin.")), 20000))]);
 
 function kecilkan(file) {
   return new Promise((ok, gagal) => {
@@ -55,28 +85,80 @@ function kecilkan(file) {
     img.src = URL.createObjectURL(file);
   });
 }
-const batas = (p) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error("Waktu habis. Pastikan Firestore sudah dibuat dan Rules sudah di-Publish.")), 20000))]);
 
-document.getElementById("upload").onclick = async () => {
-  const files = document.getElementById("file").files;
+// ----- daftar karya + hapus -----
+async function muatDaftar() {
+  const w = $("daftar"); w.textContent = "Memuat...";
+  try {
+    const snap = await batas(getDocs(query(collection(db, "karya"), where("blok", "==", blokNow()))));
+    w.innerHTML = "";
+    if (snap.empty) { w.textContent = "Belum ada karya di blok ini."; return; }
+    snap.forEach((d) => {
+      const k = d.data();
+      const row = document.createElement("div"); row.className = "row";
+      let thumb;
+      if (k.tipe === "youtube" || k.tipe === "mp4") { thumb = document.createElement("div"); thumb.className = "vid"; thumb.textContent = "Video"; }
+      else { thumb = document.createElement("img"); thumb.src = k.url; }
+      const btn = document.createElement("button"); btn.className = "btn hapus"; btn.textContent = "Hapus";
+      btn.onclick = async () => {
+        if (!confirm("Hapus karya ini? Tindakan ini tidak bisa dibatalkan.")) return;
+        try { await batas(deleteDoc(doc(db, "karya", d.id))); row.remove(); info.textContent = "Karya dihapus."; }
+        catch (e) { info.textContent = "Gagal menghapus: " + e.message; }
+      };
+      row.append(thumb, btn); w.appendChild(row);
+    });
+  } catch (e) { w.textContent = "Gagal memuat: " + e.message; }
+}
+$("blok").onchange = muatDaftar;
+
+// ----- daftar komentar + hapus -----
+async function muatKomentar() {
+  const w = $("daftarKom"); w.textContent = "Memuat...";
+  try {
+    const snap = await batas(getDocs(query(collection(db, "komentar"), orderBy("waktu", "desc"), limit(100))));
+    w.innerHTML = "";
+    if (snap.empty) { w.textContent = "Belum ada komentar."; return; }
+    snap.forEach((d) => {
+      const k = d.data();
+      const row = document.createElement("div"); row.className = "row";
+      const t = document.createElement("div"); t.style.cssText = "flex:1;min-width:0;font-size:.85rem;overflow-wrap:anywhere";
+      const b = document.createElement("b"); b.textContent = k.nama;
+      const p = document.createElement("p"); p.textContent = k.isi;
+      t.append(b, p);
+      const btn = document.createElement("button"); btn.className = "btn hapus"; btn.textContent = "Hapus";
+      btn.onclick = async () => {
+        if (!confirm("Hapus komentar dari " + k.nama + "?")) return;
+        try { await batas(deleteDoc(doc(db, "komentar", d.id))); row.remove(); info.textContent = "Komentar dihapus."; }
+        catch (e) { info.textContent = "Gagal menghapus. Pastikan sudah login admin. (" + e.message + ")"; }
+      };
+      row.append(t, btn); w.appendChild(row);
+    });
+  } catch (e) { w.textContent = "Gagal memuat: " + e.message; }
+}
+
+// ----- upload foto -----
+$("upload").onclick = async () => {
+  const files = $("file").files;
   if (!files.length) { info.textContent = "Pilih gambar dulu."; return; }
   let n = 0;
   try {
     for (const f of files) {
       info.textContent = `Mengunggah ${f.name} (${++n}/${files.length})...`;
       const url = await kecilkan(f);
-      await batas(addDoc(collection(db, "karya"), { blok: blokNow(), tipe: "gambar", url, judul: document.getElementById("judul").value, waktu: serverTimestamp() }));
+      await batas(addDoc(collection(db, "karya"), { blok: blokNow(), tipe: "gambar", url, judul: $("judul").value, waktu: serverTimestamp() }));
     }
     info.textContent = "Selesai. " + files.length + " gambar masuk ke blok " + blokNow() + ".";
+    muatDaftar();
   } catch (e) { info.textContent = "Gagal: " + e.message; console.error(e); }
 };
 
+// ----- tambah video (link) -----
 function idYoutube(link) {
   const m = link.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([A-Za-z0-9_-]{11})/);
   return m ? m[1] : null;
 }
-document.getElementById("tambahVideo").onclick = async () => {
-  const link = document.getElementById("linkVideo").value.trim();
+$("tambahVideo").onclick = async () => {
+  const link = $("linkVideo").value.trim();
   if (!link) { info.textContent = "Tempel link video dulu."; return; }
   const yt = idYoutube(link);
   let data;
@@ -87,7 +169,21 @@ document.getElementById("tambahVideo").onclick = async () => {
     info.textContent = "Menyimpan video...";
     await batas(addDoc(collection(db, "karya"), { blok: blokNow(), ...data, judul: "", waktu: serverTimestamp() }));
     info.textContent = "Selesai. Video masuk ke blok " + blokNow() + ".";
-    document.getElementById("linkVideo").value = "";
+    $("linkVideo").value = ""; muatDaftar();
   } catch (e) { info.textContent = "Gagal: " + e.message; console.error(e); }
 };
+
+// ----- login admin -----
+const auth = getAuth(app);
+$("masuk").onclick = async () => {
+  try { await signInWithEmailAndPassword(auth, $("em").value.trim(), $("pw").value); }
+  catch (e) { $("statusLogin").textContent = "Login gagal: email atau password salah."; }
+};
+$("keluar").onclick = () => signOut(auth);
+onAuthStateChanged(auth, (u) => {
+  $("formLogin").style.display = u ? "none" : "block";
+  $("keluar").style.display = u ? "block" : "none";
+  $("statusLogin").textContent = u ? "Masuk sebagai " + u.email : "Belum masuk. Login dulu untuk upload dan menghapus.";
+  muatDaftar(); muatKomentar();
+});
 </script></body></html>

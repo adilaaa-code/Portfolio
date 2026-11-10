@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Portofolio | Adila Ahmad Ramdani</title>
@@ -10,16 +9,23 @@
   <link rel="stylesheet" href="css/sections.css">
   <link rel="stylesheet" href="css/karya.css">
   <link rel="stylesheet" href="css/intro.css">
+  <style>
+    /* Rapikan jarak Experience -> Portfolio (di sini supaya pasti terbaca paling akhir) */
+    #experience{padding-bottom:0}
+    .marquee{margin-top:10px;padding:24px 0}
+    #portfolio{padding-top:56px;scroll-margin-top:36px}
+  </style>
 </head>
 <body class="intro">
 
   <!-- OPENING -->
   <div id="intro" aria-hidden="true">
-    <div class="tirai atas"></div><div class="tirai bawah"></div>
+    <div class="sinar"></div>
     <div class="orb o1"></div><div class="orb o2"></div>
+    <div class="titik-wadah"></div>
     <div class="isi">
-      <div class="cincin"><span>A</span></div>
-      <p class="sapa">Hi, welcome to</p>
+      <div class="cincin-wadah"><div class="orbit"></div><div class="cincin"><span>A</span></div></div>
+      <p class="sapa"><span class="tangan">👋</span> Hi, welcome to</p>
       <h1 class="judul"><span class="kata" data-t="Adila's"></span> <span class="kata" data-t="Portfolio"></span></h1>
       <p class="tag">Where ideas turn into visuals.</p>
       <div class="muat"><div class="bar"><i></i></div><b class="persen">0%</b></div>
@@ -29,15 +35,15 @@
   <canvas id="stars"></canvas>
 
   <!-- NAVBAR (pill melayang) -->
-<button class="garis" aria-label="Buka menu" aria-expanded="false"></button>
+  <button class="garis" aria-label="Buka menu" aria-expanded="false"></button>
   <nav class="pill">
-  <a href="#home" class="active">Home</a>
-  <a href="#about">About</a>
-  <a href="#education">Education</a>
-  <a href="#experience">Experience</a>
-  <a href="#portfolio">Portfolio</a>
-  <a href="#contact">Contact</a>
-</nav>
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#education">Education</a>
+    <a href="#experience">Experience</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
   <main>
     <!-- HOME -->
@@ -58,38 +64,44 @@
     <!-- ABOUT -->
     <section id="about" class="section">
       <h2 class="title">About Me</h2>
-      <p class="lead">I’m Adila Ahmad Ramdani, a Multimedia Engineering Technology student at Politeknik Negeri Media Kreatif (GPA 3.77/4.00), specializing in graphic design, motion graphics, and social media content. I work with Adobe Illustrator, After Effects, Figma, and Canva to create visuals ranging from campaign posters and Instagram feeds to event videotron bumpers. I have led creative and publication teams for campus and regional events, delivering assets on schedule while keeping branding consistent. I’m a collaborative team player eager to grow in the creative industry.</p></section>
-      <section id="education" class="section">
-  <h2 class="title">Education</h2>
-<div class="item card ada-foto">
-  <b>Politeknik Negeri Media Kreatif</b><span>Teknologi Rekayasa Multimedia</span><small>2024 – Sekarang</small>
-  <img class="foto" src="pict/polmed.jpg" alt="Foto kampus">
-</div>
-<div class="item card ada-foto">
-  <b>MAN 16 Jakarta</b><span>IPA</span><small>2021 – 2024</small>
-  <img class="foto" src="pict/man16.jpg" alt="Foto sekolah">
-</div>
-</section>
+      <p class="lead">I’m Adila Ahmad Ramdani, a Multimedia Engineering Technology student at Politeknik Negeri Media Kreatif (GPA 3.77/4.00), specializing in graphic design, motion graphics, and social media content. I work with Adobe Illustrator, After Effects, Figma, and Canva to create visuals ranging from campaign posters and Instagram feeds to event videotron bumpers. I have led creative and publication teams for campus and regional events, delivering assets on schedule while keeping branding consistent. I’m a collaborative team player eager to grow in the creative industry.</p>
+    </section>
 
-<section id="experience" class="section">
-  <h2 class="title">Experience</h2>
-  <div class="list">
-    <div class="item card"><b>Divisi Kreatif Tim Sukses Kabinet Aksatama</b><span>Ketua Divisi</span><small>2025</small></div>
-    <div class="item card"><b>Divisi HPD Polimedia Mengabdi</b><span>Ketua Divisi</span><small>2026</small></div>
-    <div class="item card"><b>Divisi HPD Rakerwil Fornassosmas Wilayah 4</b><span>Anggota</span><small>2026</small></div>
-    <div class="item card"><b>Divisi HPD Sekolah Ormawa</b><span>Anggota</span><small>2026</small></div>
-  </div>
-  <div class="marquee" aria-label="Logo organisasi">
-  <div class="track">
-    <div class="grup">
-      <div class="logo-kotak"><img src="pict/logo-aksatama.png" alt="Tim Sukses Kabinet Aksatama"></div>
-      <div class="logo-kotak"><img src="pict/logo-polimedia-mengabdi.png" alt="Polimedia Mengabdi"></div>
-      <div class="logo-kotak"><img src="pict/logo-rakerwil.png" alt="Rakerwil Fornassosmas Wilayah 4"></div>
-      <div class="logo-kotak"><img src="pict/logo-ormawa.png" alt="Sekolah Ormawa"></div>
-    </div>
-  </div>
-</div>
-</section>
+    <!-- EDUCATION -->
+    <section id="education" class="section">
+      <h2 class="title">Education</h2>
+      <div class="list">
+        <div class="item card ada-foto">
+          <b>Politeknik Negeri Media Kreatif</b><span>Teknologi Rekayasa Multimedia</span><small>2024 – Sekarang</small>
+          <img class="foto" src="pict/polmed.jpg" alt="Foto kampus">
+        </div>
+        <div class="item card ada-foto">
+          <b>MAN 16 Jakarta</b><span>IPA</span><small>2021 – 2024</small>
+          <img class="foto" src="pict/man16.jpg" alt="Foto sekolah">
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section">
+      <h2 class="title">Experience</h2>
+      <div class="list">
+        <div class="item card"><b>Divisi Kreatif Tim Sukses Kabinet Aksatama</b><span>Ketua Divisi</span><small>2025</small></div>
+        <div class="item card"><b>Divisi HPD Polimedia Mengabdi</b><span>Ketua Divisi</span><small>2026</small></div>
+        <div class="item card"><b>Divisi HPD Rakerwil Fornassosmas Wilayah 4</b><span>Anggota</span><small>2026</small></div>
+        <div class="item card"><b>Divisi HPD Sekolah Ormawa</b><span>Anggota</span><small>2026</small></div>
+      </div>
+      <div class="marquee" aria-label="Logo organisasi">
+        <div class="track">
+          <div class="grup">
+            <div class="logo-kotak"><img src="pict/logo-aksatama.png" alt="Tim Sukses Kabinet Aksatama"></div>
+            <div class="logo-kotak"><img src="pict/logo-polimedia-mengabdi.png" alt="Polimedia Mengabdi"></div>
+            <div class="logo-kotak"><img src="pict/logo-rakerwil.png" alt="Rakerwil Fornassosmas Wilayah 4"></div>
+            <div class="logo-kotak"><img src="pict/logo-ormawa.png" alt="Sekolah Ormawa"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- PORTFOLIO -->
     <section id="portfolio" class="section">
@@ -101,11 +113,11 @@
       </div>
 
       <div class="panel on" id="t-karya">
-        <div class="blok card"><h3>Divisi HPD Polimedia Mengabdi</h3><div class="gallery" id="grid-1" data-mockup="pict/polimediamengabdi1,pict/polimediamengabdi2,pict/polimediamengabdi3,pict/polimediamengabdi4"></div></div>
-        <div class="blok card"><h3>Divisi HPD Sekolah Ormawa</h3><div class="gallery" id="grid-2" data-mockup="pict/sekolahormawa1,pict/sekolahormawa2,pict/sekolahormawa3"></div></div>
-        <div class="blok card"><h3>Divisi Kreatif Tim Sukses Kabinet Aksatama</h3><div class="gallery" id="grid-3" data-mockup="pict/kabinetaksatama1,pict/kabinetaksatama2"></div></div>
+        <div class="blok card"><h3>Divisi HPD Polimedia Mengabdi</h3><div class="gallery" id="grid-1" data-feed="pict/feed-polimediamengabdi" data-akun="polimediamengabdi_"></div></div>
+        <div class="blok card"><h3>Divisi HPD Sekolah Ormawa</h3><div class="gallery" id="grid-2" data-feed="pict/feed-sekolahormawa" data-akun="sekolah.ormawa"></div></div>
+        <div class="blok card"><h3>Divisi Kreatif Tim Sukses Kabinet Aksatama</h3><div class="gallery" id="grid-3" data-feed="pict/feed-kabinetaksatama" data-akun="kabinetaksatama"></div></div>
         <div class="blok card"><h3>Divisi HPD Rakerwil Wilayah 4</h3><div class="gallery" id="grid-4"></div></div>
-      </div>      
+      </div>
       <div class="panel" id="t-sertif"><div class="gallery" id="grid-5"></div></div>
       <div class="panel" id="t-skill">
         <div class="skills">
@@ -116,23 +128,23 @@
 
     <!-- CONTACT -->
     <section id="contact" class="section">
-      <h2 class="title">Hubungi Saya</h2>
+      <h2 class="title">Komentar</h2>
       <div class="contact-grid">
         <div class="card box">
-          <h3 class="blue">Hubungi</h3>
-          <p>Ada yang mau didiskusikan? Langsung kirim pesan aja ya!</p>
-          <form id="formKontak">
-            <input id="nama" placeholder="Nama Anda" required>
-            <input id="email" type="email" placeholder="Email Anda" required>
-            <textarea id="pesan" rows="4" placeholder="Pesan Anda" required></textarea>
-            <button class="btn primary" type="submit">Kirim Pesan</button>
+          <h3 class="blue">Komentar (<span id="jumlah">0</span>)</h3>
+          <p>Tinggalkan kesan, saran, atau sapaan untukku!</p>
+          <form id="formKomentar">
+            <input id="kNama" placeholder="Nama kamu" maxlength="40" required>
+            <textarea id="kIsi" rows="3" placeholder="Tulis komentarmu di sini..." maxlength="500" required></textarea>
+            <button class="btn primary" type="submit">Kirim Komentar</button>
             <p id="status"></p>
           </form>
+          <div id="daftarKomentar"></div>
           <h4 class="find">FIND ME</h4>
-            <a class="social card" href="https://www.linkedin.com/in/adila-ahmad-ramdani-83a3a4180" target="_blank" rel="noopener">LinkedIn <small>Adila Ahmad Ramdani</small></a>
-            <a class="social card" href="https://www.instagram.com/its.diilllls/" target="_blank" rel="noopener">Instagram <small>its.diilllls</small></a>
-            <a class="social card" href="https://github.com/adilaaa-code" target="_blank" rel="noopener">Github <small>adilaaa-code</small></a>
-            <a class="social card" href="https://www.tiktok.com/@punyaadilaaaa" target="_blank" rel="noopener">TikTok <small>punyaadilaaaa</small></a>
+          <a class="social card" href="https://www.linkedin.com/in/adila-ahmad-ramdani-83a3a4180" target="_blank" rel="noopener">LinkedIn <small>Adila Ahmad Ramdani</small></a>
+          <a class="social card" href="https://www.instagram.com/its.diilllls/" target="_blank" rel="noopener">Instagram <small>its.diilllls</small></a>
+          <a class="social card" href="https://github.com/adilaaa-code" target="_blank" rel="noopener">Github <small>adilaaa-code</small></a>
+          <a class="social card" href="https://www.tiktok.com/@punyaadilaaaa" target="_blank" rel="noopener">TikTok <small>punyaadilaaaa</small></a>
         </div>
       </div>
     </section>
